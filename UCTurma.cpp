@@ -30,3 +30,7 @@ bool UCTurma::operator==(const UCTurma& turma) {
     if (uccode_==turma.getUC() && classcode_==turma.getClassCode()) return true;
     else return false;
 }
+
+vector<Aula> UCTurma::getHorarioUCTurma(){
+    return horarioUCTurma;
+}

@@ -22,7 +22,6 @@ public:
     vector<Estudante> getEstudantes() const;
     vector<UCTurma> getUCTurmas() const;
     vector<string> getCodes() const;
-
     vector<string> getTurmas() const;
 
 

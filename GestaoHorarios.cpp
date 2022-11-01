@@ -32,7 +32,7 @@ void GestaoHorarios::readEstudantes(){
                 UcCode = substr;
             }
             if (i == 3) {
-                ClassCode = substr;
+                ClassCode = substr.substr(0,7);
             }
             i++;
         }
@@ -75,6 +75,7 @@ void GestaoHorarios::readAulas() {
             }
             if (i==5){
                 Type=substr;
+                if (Type[Type.length() - 1] == '\r') Type = Type.substr(0, Type.length() - 1);
             }
             i++;
         }

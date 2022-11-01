@@ -18,6 +18,7 @@ public:
     void print() const;
     bool operator==(const UCTurma& turma);
     void adicionarAula( const Aula& aula);
+    vector<Aula> getHorarioUCTurma();
 private:
     vector<Aula> horarioUCTurma;
     string uccode_;
