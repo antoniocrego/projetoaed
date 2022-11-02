@@ -17,6 +17,9 @@ public:
     void adicionarTurma(const UCTurma &turma);
     void print() const;
     bool operator==(const Estudante &aluno) const;
+    bool operator==(int x) const;
+    bool operator<(const Estudante& aluno) const;
+    void removerTurma(const UCTurma& turma);
 
 private:
     int studentcode_;

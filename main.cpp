@@ -10,12 +10,6 @@
 #include <algorithm>
 
 using namespace std;
-bool sortEstudantesNome(const Estudante &Estudante1, const Estudante &Estudante2 ){
-    if(Estudante1.getName()< Estudante2.getName()){
-        return true;
-    }
-    return false;
-}
 void Option1(GestaoHorarios gestor, string code){
     vector <Estudante> StudentsUC;
     for (Estudante a: gestor.getEstudantes()){
@@ -23,7 +17,7 @@ void Option1(GestaoHorarios gestor, string code){
             if (turma.getUC()==code) StudentsUC.push_back(a);
         }
     }
-    sort(StudentsUC.begin(),StudentsUC.end(), sortEstudantesNome);
+    sort(StudentsUC.begin(),StudentsUC.end());
     for (Estudante a: StudentsUC){
         cout << a.getCode() << ',' << a.getName() << endl;
     }
@@ -36,78 +30,109 @@ void Option2(GestaoHorarios gestor, string turma, string code){
             if (turmas.getUC()==code && turmas.getClassCode()==turma) StudentsTurma.push_back(a);
         }
     }
-    sort(StudentsTurma.begin(),StudentsTurma.end(), sortEstudantesNome);
+    sort(StudentsTurma.begin(),StudentsTurma.end());
     for (Estudante a: StudentsTurma){
         cout << a.getCode() << ',' << a.getName() << endl;
     }
-    if (StudentsTurma.empty()) cout << "Nenhum estudante está inscrito na turma " << turma << " da UC " << code << endl;
+    if (StudentsTurma.empty()) cout << "Nenhum estudante está inscrito na turma " << turma << " da UC " << code << "." << endl;
+    else cout << "Estão inscritos " << StudentsTurma.size() << " alunos na turma " << turma << " da UC " << code << "." << endl;
 }
-void Option3(GestaoHorarios gestor, string name) {
-    vector<Estudante> estudantes;
+void Option3(GestaoHorarios gestor, int code) {
     vector<UCTurma> turmas;
     vector<Aula> horario;
-    for (Estudante e: gestor.getEstudantes()) {
-        if (e.getName() == name) {
-            turmas = e.getturmasEstudante();
-        }
-    }
+    vector<Estudante> estudantes = gestor.getEstudantes();
+    vector<UCTurma> bigturmas = gestor.getUCTurmas();
+    turmas = find(estudantes.begin(),estudantes.end(),Estudante(code,"unimportant"))->getturmasEstudante();
+    /*for (Estudante e: gestor.getEstudantes()){
+        if (e.getCode() == code) turmas = e.getturmasEstudante();
+    }*/
     for (UCTurma t: turmas) {
-        for (Aula a: t.getHorarioUCTurma())
-            horario.push_back(a);
+        for (Aula a: find(bigturmas.begin(),bigturmas.end(),t)->getHorarioUCTurma()) horario.push_back(a);
     }
-    for (Aula a: horario) {
-        a.print();
+    sort(horario.begin(), horario.end());
+    int counter = 0;
+    while (counter!=7){
+        if (counter==0) cout << "Monday:" << endl;
+        else if (counter==1) cout << "Tuesday:" << endl;
+        else if (counter==2) cout << "Wednesday:" << endl;
+        else if (counter==3) cout << "Thursday:" << endl;
+        else if (counter==4) cout << "Friday:" << endl;
+        else if (counter==5) cout << "Sunday:" << endl;
+        else if (counter==6) cout << "Saturday:" << endl;
+
+        for(Aula a: horario){
+            if (a.getDay()=="Monday" && counter==0) a.print();
+            else if (a.getDay()=="Tuesday" && counter==1) a.print();
+            else if (a.getDay()=="Wednesday" && counter==2) a.print();
+            else if (a.getDay()=="Thursday" && counter==3) a.print();
+            else if (a.getDay()=="Friday" && counter==4) a.print();
+            else if (a.getDay()=="Saturday" && counter==5) a.print();
+            else if (a.getDay()=="Sunday" && counter==6) a.print();
+        }
+        counter++;
     }
 }
+void Option4(GestaoHorarios gestor, string ano){
+    vector<Estudante> estudantes;
+    if (ano=="3"){
+        for (Estudante a: gestor.getEstudantes()){
+            for(UCTurma turma: a.getturmasEstudante()){
+                if (turma.getClassCode().at(0)==ano.at(0)){
+                    estudantes.push_back(a);
+                    break;
+                }
+            }
+        }
+    }
+    if (ano=="2"){
+        for (Estudante a: gestor.getEstudantes()){
+            for(UCTurma turma: a.getturmasEstudante()){
+                if (turma.getClassCode().at(0)==ano.at(0)){
+                    estudantes.push_back(a);
+                    break;
+                }
+            }
+        }
+    }
+    if (ano=="1"){
+        for (Estudante a: gestor.getEstudantes()){
+            for(UCTurma turma: a.getturmasEstudante()){
+                if (turma.getClassCode().at(0)==ano.at(0)){
+                    estudantes.push_back(a);
+                    break;
+                }
+            }
+        }
+    }
+    sort(estudantes.begin(),estudantes.end());
+    for (Estudante e: estudantes){
+        cout << e.getCode() << ", " << e.getName() << endl;
+    }
+    if (estudantes.empty()) cout << "Nenhum aluno está inscrito em cadeiras do " << ano << "º ano letivo.";
+    else cout << "Estão inscritos " << estudantes.size() << " alunos em cadeiras do " << ano << "º ano letivo.";
+}
+void readPedidos(GestaoHorarios gestor){
+    for (Estudante e : gestor.getEstudantes()){
+        int size= e.getpedidos().size();
+        while (size--){
 
-void Option4(GestaoHorarios gestor, char ano){
+        }
+    }
 
-    vector <Estudante> firstyear;
-    vector <Estudante> secondyear;
-    vector <Estudante> thirdyear;
-    if (ano=='3'){
-        for (Estudante a: gestor.getEstudantes()){
-            for(UCTurma turma: a.getturmasEstudante() ){
-                if (turma.getClassCode().at(0)==ano){
-                    thirdyear.push_back(a);
-                    break;
-                }
-            }
-        }
-    }
-    if (ano=='2'){
-        for (Estudante a: gestor.getEstudantes()){
-            for(UCTurma turma: a.getturmasEstudante() ){
-                if (turma.getClassCode().at(0)==ano){
-                    secondyear.push_back(a);
-                    break;
-                }
-            }
-        }
-    }
-    if (ano=='1'){
-        for (Estudante a: gestor.getEstudantes()){
-            for(UCTurma turma: a.getturmasEstudante() ){
-                if (turma.getClassCode().at(0)==ano){
-                    secondyear.push_back(a);
-                    break;
-                }
-            }
-        }
-    }
 }
 
 int main() {
     bool flag=true;
     GestaoHorarios gestor = GestaoHorarios();
     int quit;
+    cout << gestor.getEstudantes().size();
     while(flag) {
         cout << endl << "Gestor de Horários de Estudantes L.EIC" << endl;
         cout << "Digite 0 a qualquer momento para fechar o programa" << endl;
         cout << "---------------------------------------------------------" << endl;
         cout << "1 - Ver estudantes de uma cadeira" << endl;
         cout << "2 - Ver estudantes de uma turma" << endl;
-        cout << "3 - Ver estudantes inscritos em n UCs" << endl;
+        cout << "3 - Ver horário de um estudante" << endl;
         cout << "4 - Ver estudantes de um ano letivo" << endl;
         cout << "---------------------------------------------------------" << endl;
         cout << "Selecione uma opção: ";
@@ -161,20 +186,57 @@ int main() {
             }
             if (turma=="0") flag = false;
             Option2(gestor,turma,code);
-        }
-        if (selection == 3){
-            string name;
-            cout << "Insira o nome do Estudante para ver o seu horário: ";
-            cin>> name;
-            vector <string> Turmas= gestor.getTurmas();
-            /*while (!(cin >> turma) or find(Turmas().begin(), Turmas().end(), turma) == gestor.getCodes().end()) {
+            cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
+            while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << endl << "Insira o código da UC: ";
-                cin >> turma;
-            }*/
-            Option3(gestor,name);
+                cout << endl << "Selecione uma opção: ";
+            }
+            if (quit==0) flag = false;
+        }
+        if (selection == 3){
+            int code;
+            cout << "Insira o código mecanógrafico do estudante: ";
+            vector<string> Turmas= gestor.getTurmas();
+            vector<Estudante> estudantes = gestor.getEstudantes();
+            while (!(cin>>code) or find(estudantes.begin(), estudantes.end(), code) == estudantes.end()) {
+                if (code==0) break;
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << endl << "Insira o código mecanógrafico do estudante: ";
+            }
+            if (code==0) flag = false;
+            Option3(gestor,code);
+            cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
+            while (!(cin >> quit) or (quit != 0 and quit != 1)) {
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << endl << "Selecione uma opção: ";
+            }
+            if (quit==0) flag = false;
+        }
+        if (selection==4){
+            string year;
+            cout << "Insira o ano letivo: ";
+            while(!(cin>>year) or (year!="1" and year!="2" and year!="3")){
+                if (year=="0") break;
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << endl << "Insira o ano letivo: ";
+            }
+            Option4(gestor, year);
+            cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
+            while (!(cin >> quit) or (quit != 0 and quit != 1)) {
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << endl << "Insira o ano letivo: ";
+            }
+            if (quit==0) flag = false;
         }
         if (selection==0){
             flag=false;

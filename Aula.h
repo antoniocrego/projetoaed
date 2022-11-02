@@ -11,10 +11,16 @@ using namespace std;
 class Aula{
 
 public:
-    Aula(string dia, float inicio, float duracao, string tipo);
+    Aula(string uccode, string classcode, string dia, float inicio, float duracao, string tipo);
+    string getDay() const;
+    float getInicio() const;
+    float getFim() const;
+    bool operator<(const Aula& aula2) const;
     void print();
 
 private:
+    string uccode_;
+    string classcode_;
     string dia_;
     float inicio_;
     float fim_;

@@ -82,8 +82,8 @@ void GestaoHorarios::readAulas() {
         i=0;
         float start = stof(StartHour);
         float d = stof(Duration);
-        Aula aula= Aula(Weekday, start, d, Type);
         UCTurma turma = UCTurma(UcCode, ClassCode);
+        Aula aula= Aula(turma.getUC(), turma.getClassCode(), Weekday, start, d, Type);
         if (find(horario.begin(), horario.end(), turma)==horario.end()){
             horario.push_back(turma);
             horario.back().adicionarAula(aula);

@@ -7,7 +7,9 @@
 #include <iostream>
 using namespace std;
 
-Aula::Aula(string dia, float inicio, float duracao, string tipo) {
+Aula::Aula(string uccode, string classcode, string dia, float inicio, float duracao, string tipo) {
+    uccode_ = uccode;
+    classcode_ = classcode;
     dia_=dia;
     inicio_=inicio;
     duracao_=duracao;
@@ -16,5 +18,21 @@ Aula::Aula(string dia, float inicio, float duracao, string tipo) {
 }
 
 void Aula::print() {
-    cout<< "Dia: " << dia_ << ',' << "Inicio: " << inicio_ << ',' << "Fim: " << fim_ << "Duração: " << duracao_ << ',' << "Tipo: " << tipo_;
+    cout << "\tUC: " << uccode_ << ", Turma: " << classcode_ << ", Duração: " << inicio_ << "-" << fim_ << ", Tipo: " << tipo_ << endl;
+}
+
+string Aula::getDay() const{
+    return dia_;
+}
+
+float Aula::getInicio() const{
+    return inicio_;
+}
+
+float Aula::getFim() const{
+    return fim_;
+}
+
+bool Aula::operator<(const Aula &aula2) const {
+    return inicio_<aula2.getInicio();
 }
