@@ -4,11 +4,14 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "Estudante.h"
-#include "Aula.h"
 #include <vector>
 #include <set>
 #include <queue>
+#include <limits>
+#include <algorithm>
+#include "UCTurma.h"
+#include "Estudante.h"
+#include "Aula.h"
 #include "Pedido.h"
 #ifndef AED_PROJECT_GESTAOHORARIOS_H
 #define AED_PROJECT_GESTAOHORARIOS_H
@@ -23,8 +26,8 @@ public:
     void readTurmas();
     void addPedido(const Pedido& x);
     void processarPedido();
-    void addEstudante(const Estudante& e);
-    bool isPossible(Aula& aula) const;
+    void output() const;
+    void outputFails() const;
     vector<Estudante> getEstudantes() const;
     vector<UCTurma> getUCTurmas() const;
     vector<string> getCodes() const;

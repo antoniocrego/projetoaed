@@ -17,6 +17,7 @@ public:
     float getFim() const;
     string getTipo() const;
     bool operator<(const Aula& aula2) const;
+    bool isPossible(const Aula& aula2) const;
     void print();
 
 private:

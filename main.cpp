@@ -1,17 +1,7 @@
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include "Estudante.h"
-#include "Aula.h"
 #include "GestaoHorarios.h"
-#include "UCTurma.h"
-#include "Pedido.h"
-#include <limits>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
-void Option1(GestaoHorarios gestor, string code){
+void Option1(const GestaoHorarios& gestor, const string& code){
     vector <Estudante> StudentsUC;
     for (Estudante a: gestor.getEstudantes()){
         for (const UCTurma& turma: a.getturmasEstudante()){
@@ -24,7 +14,7 @@ void Option1(GestaoHorarios gestor, string code){
     }
     cout << "Estão inscritos " << StudentsUC.size() << " alunos nesta disciplina";
 }
-void Option2(GestaoHorarios gestor, string turma, string code){
+void Option2(const GestaoHorarios& gestor, const string& turma, const string& code){
     vector<Estudante> StudentsTurma;
     for (Estudante a: gestor.getEstudantes()){
         for (const UCTurma& turmas: a.getturmasEstudante()){
@@ -38,16 +28,13 @@ void Option2(GestaoHorarios gestor, string turma, string code){
     if (StudentsTurma.empty()) cout << "Nenhum estudante está inscrito na turma " << turma << " da UC " << code << "." << endl;
     else cout << "Estão inscritos " << StudentsTurma.size() << " alunos na turma " << turma << " da UC " << code << "." << endl;
 }
-void Option3(GestaoHorarios gestor, int code) {
-    vector<UCTurma> turmas;
-    vector<Aula> horario;
+void Option3(const GestaoHorarios& gestor, int code) {
     vector<Estudante> estudantes = gestor.getEstudantes();
     vector<UCTurma> bigturmas = gestor.getUCTurmas();
-    turmas = find(estudantes.begin(),estudantes.end(),Estudante(code,"unimportant"))->getturmasEstudante();
-    /*for (Estudante e: gestor.getEstudantes()){
-        if (e.getCode() == code) turmas = e.getturmasEstudante();
-    }*/
+    vector<UCTurma> turmas = find(estudantes.begin(),estudantes.end(),code)->getturmasEstudante();
+    vector<Aula> horario;
     for (const UCTurma& t: turmas) {
+        if (t.getClassCode()=="N/A") continue;
         for (const Aula& a: find(bigturmas.begin(),bigturmas.end(),t)->getHorarioUCTurma()) horario.push_back(a);
     }
     sort(horario.begin(), horario.end());
@@ -73,7 +60,7 @@ void Option3(GestaoHorarios gestor, int code) {
         counter++;
     }
 }
-void Option4(GestaoHorarios gestor, string ano){
+void Option4(const GestaoHorarios& gestor, string ano){
     vector<Estudante> estudantes;
     if (ano=="3"){
         for (Estudante a: gestor.getEstudantes()){
@@ -112,65 +99,6 @@ void Option4(GestaoHorarios gestor, string ano){
     if (estudantes.empty()) cout << "Nenhum aluno está inscrito em cadeiras do " << ano << "º ano letivo.";
     else cout << "Estão inscritos " << estudantes.size() << " alunos em cadeiras do " << ano << "º ano letivo.";
 }
-
-/*void choice1(GestaoHorarios gestor ,string studentcode_, string uccode, string classcode ){
-    UCTurma turma= UCTurma(uccode, classcode);
-    int studentcode = stoi(studentcode_);
-    std::vector<Estudante>::iterator it;
-    std::vector<UCTurma>::iterator itr;
-
-    for ( it = gestor.getEstudantes().begin(); it!=gestor.getEstudantes().end(); it++){
-        if (it->getCode()==studentcode){
-            for (itr=it->getturmasEstudante().begin(); itr!=it->getturmasEstudante().end(); itr++ ){
-                if (turma==*itr){
-                    Pedido pedido=Pedido(it->getCode(), it->getName(), itr->getUC(), itr->getClassCode());
-
-                    it->setpreferenciaTrue();
-
-                    totalPedidos.push(pedido);
-
-                }
-
-            }
-            if (itr==it->getturmasEstudante().end()){
-                cout<< "O estudante já se encontrava nesta turma";
-            }
-            break;
-        }
-    }
-    if (it==gestor.getEstudantes().end()){
-        cout << "O Estudante escolhido não existe";
-    }
-
-}
-
-void choice2(GestaoHorarios gestor ,string studentcode_, string uccode, string classcode ){
-    UCTurma turma= UCTurma(uccode, classcode);
-    int studentcode = stoi(studentcode_);
-    std::vector<Estudante>::iterator it;
-    std::vector<UCTurma>::iterator itr;
-
-    for ( it = gestor.getEstudantes().begin(); it!=gestor.getEstudantes().end(); it++){
-        if (it->getCode()==studentcode){
-            for (itr=it->getturmasEstudante().begin(); itr!=it->getturmasEstudante().end(); itr++ ){
-                if (turma==*itr){
-                    Pedido(it->getCode(), it->getName(), itr->getUC(), itr->getClassCode());
-                    it->setpreferenciaFalse();
-                }
-
-            }
-            if (itr==it->getturmasEstudante().end()){
-                cout<< "O estudante já não se encontrava nesta turma";
-            }
-            break;
-        }
-    }
-    if (it==gestor.getEstudantes().end()){
-        cout << "O Estudante escolhido não existe";
-    }
-
-}
-}*/
 
 int main() {
     GestaoHorarios gestor = GestaoHorarios();
@@ -241,7 +169,7 @@ int main() {
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;
-                cin.clear();
+                cin.clear();while(!gestor.getPedidos().empty()) gestor.processarPedido();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             }
@@ -464,6 +392,16 @@ int main() {
                 cout << endl;
                 temp.pop();
             }
+            cout << endl << "Pedidos satisfeitos:" << endl;
+            for (const Pedido& c : gestor.getSuccessos()){
+                c.print();
+                cout << endl;
+            }
+            cout << endl << "Pedidos não satisfeitos:" << endl;
+            for (const Pedido& c : gestor.getFails()){
+                c.print();
+                cout << endl;
+            }
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;
@@ -474,7 +412,9 @@ int main() {
             if (quit==0) break;
         }
         if (selection==7){
-            for (int k = 1; k<=gestor.getPedidos().size(); k++) gestor.processarPedido();
+            while(!gestor.getPedidos().empty()) gestor.processarPedido();
+            gestor.output();
+            gestor.outputFails();
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;

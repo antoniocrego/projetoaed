@@ -40,3 +40,14 @@ string Aula::getTipo() const {
 bool Aula::operator<(const Aula &aula2) const {
     return inicio_<aula2.getInicio();
 }
+
+bool Aula::isPossible(const Aula& aula2) const {
+    if(dia_ == aula2.getDay()){
+        if(tipo_=="T" || aula2.getTipo()=="T") return true;
+        else {
+            if (inicio_==aula2.getInicio()) return false;
+            if ((inicio_<aula2.getInicio()<fim_) && (aula2.getInicio()<inicio_<aula2.getFim())) return false;
+        }
+    }
+    return true;
+}
