@@ -33,6 +33,10 @@ float Aula::getFim() const{
     return fim_;
 }
 
+string Aula::getTipo() const {
+    return tipo_;
+}
+
 bool Aula::operator<(const Aula &aula2) const {
     return inicio_<aula2.getInicio();
 }

@@ -19,7 +19,8 @@ public:
     bool operator==(const Estudante &aluno) const;
     bool operator==(int x) const;
     bool operator<(const Estudante& aluno) const;
-    void removerTurma(const UCTurma& turma);
+    void removerTurma(string uc);
+    void removerUC(string uc);
 
 private:
     int studentcode_;

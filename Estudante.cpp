@@ -43,13 +43,16 @@ vector<UCTurma> Estudante::getturmasEstudante() {
     return turmasEstudante;
 }
 
-void Estudante::removerTurma(const UCTurma& turma){
-    vector<UCTurma>::iterator itr;
+void Estudante::removerTurma(string uc){
     for (UCTurma t : turmasEstudante){
-        if (turma.getClassCode()==t.getClassCode() && turma.getUC()==t.getUC()){
-            break;
-        }
+        if (uc==t.getUC()) t.setClassCode("N/A");
+    }
+}
+
+void Estudante::removerUC(string uc) {
+    auto itr = turmasEstudante.begin();
+    for (UCTurma t : turmasEstudante){
+        if (uc==t.getUC()) turmasEstudante.erase(itr);
         itr++;
     }
-    turmasEstudante.erase(itr);
 }

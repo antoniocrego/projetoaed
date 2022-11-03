@@ -46,7 +46,6 @@ void GestaoHorarios::readEstudantes(){
         } else (find(estudantes.begin(), estudantes.end(), estudante)->adicionarTurma(turma));
     }
 }
-
 void GestaoHorarios::readAulas() {
     ifstream in1("../Tests/classes.csv");
     string line;
@@ -132,20 +131,6 @@ void GestaoHorarios::readCodes() {
         }*/
     }
 }
-vector<Estudante> GestaoHorarios::getEstudantes() const {
-    return estudantes;
-}
-
-vector<UCTurma> GestaoHorarios::getUCTurmas() const {
-    return horario;
-}
-vector<string> GestaoHorarios::getCodes() const{
-    return codes;
-}
-
-vector<string> GestaoHorarios::getTurmas() const {
-    return turmas;
-}
 void GestaoHorarios::readTurmas() {
     ifstream in1("../Tests/classes_per_uc.csv");
     string line;
@@ -168,4 +153,127 @@ void GestaoHorarios::readTurmas() {
             turmas.push_back(turma);
         }*/
     }
+}
+
+void GestaoHorarios::addPedido(const Pedido& x) {
+    pedidos.push(x);
+}
+
+void GestaoHorarios::processarPedido() {
+    bool success = true;
+    Pedido current = pedidos.front();
+    if (current.getType()=="addClass"){                // precisa compatibilidade horários
+
+    }
+    if (current.getType()=="removeClass"){
+        if (find(estudantes.begin(), estudantes.end(), current.getStudent()) == estudantes.end()){
+            success = false;
+            current.print();
+            cout << " : O estudante não existe!" << endl;
+            fail.push_back(current);
+        }
+        else if (find(codes.begin(),codes.end(),current.getUC())==codes.end()){
+            success = false;
+            current.print();
+            cout << " : UC inválida!" << endl;
+            fail.push_back(current);
+        }
+        else{
+            find(estudantes.begin(),estudantes.end(),current.getStudent())->removerTurma(current.getUC());
+            cout << " : O estudante " << current.getStudent() << " foi removido da sua turma da UC " << current.getUC() << " com sucesso!" << endl;
+            sucesso.push_back(current);
+        }
+    }
+    if (current.getType()=="addUC"){
+        if (find(codes.begin(),codes.end(),current.getUC2())==codes.end()){
+            success = false;
+            current.print();
+            cout << " : UC inválida!" << endl;
+        }
+        else {
+            if (find(estudantes.begin(), estudantes.end(), current.getStudent()) == estudantes.end()) {
+                string nome;
+                cout << endl << "Insira o nome do novo estudante: ";
+                while (!(cin >> nome)) {
+                    cout << "Opção inválida!" << endl;
+                    cin.clear();
+                    cout << endl << "Insira o nome do novo estudante: ";
+                }
+                estudantes.emplace_back(Estudante(current.getStudent(), nome));
+            }
+            vector<UCTurma> copy = find(estudantes.begin(), estudantes.end(),current.getStudent())->getturmasEstudante();
+            for (const UCTurma &c: copy) {
+                if (c.getUC() == current.getUC2()) {
+                    current.print();
+                    cout << " : O estudante já se encontra nesta UC." << endl;
+                    fail.push_back(current);
+                    success = false;
+                    break;
+                }
+            }
+            if (success) {
+                find(estudantes.begin(), estudantes.end(), current.getStudent())->adicionarTurma(
+                        UCTurma(current.getUC2(), "N/A"));
+                current.print();
+                cout << " : O estudante " << current.getStudent() << " foi inserido na UC " << current.getUC2() << " com sucesso!" << endl;
+                sucesso.push_back(current);
+            }
+        }
+    }
+    if (current.getType()=="removeUC"){
+        if (find(estudantes.begin(), estudantes.end(), current.getStudent()) == estudantes.end()){
+            success = false;
+            current.print();
+            cout << " : O estudante não existe!" << endl;
+            fail.push_back(current);
+        }
+        else if (find(codes.begin(),codes.end(),current.getUC())==codes.end()){
+            success = false;
+            current.print();
+            cout << " : UC inválida!" << endl;
+            fail.push_back(current);
+        }
+        else{
+            find(estudantes.begin(),estudantes.end(),current.getStudent())->removerUC(current.getUC());
+            current.print();
+            cout << " : O aluno " << current.getStudent() << " foi removido da UC " << current.getUC() << " e todas as turmas associadas com sucesso!" << endl;
+            sucesso.push_back(current);
+        }
+    }
+    if (current.getType()=="changeClass"){            // precisa compatibilidade horários
+
+    }
+    pedidos.pop();
+}
+
+void GestaoHorarios::addEstudante(const Estudante &e) {
+    estudantes.push_back(e);
+}
+
+vector<Estudante> GestaoHorarios::getEstudantes() const {
+    return estudantes;
+}
+vector<UCTurma> GestaoHorarios::getUCTurmas() const {
+    return horario;
+}
+vector<string> GestaoHorarios::getCodes() const{
+    return codes;
+}
+vector<string> GestaoHorarios::getTurmas() const {
+    return turmas;
+}
+queue<Pedido> GestaoHorarios::getPedidos() const {
+    return pedidos;
+}
+
+bool GestaoHorarios::isPossible(Aula& aula) const {
+    for (UCTurma t:horario){
+        for(Aula a: t.getHorarioUCTurma()){
+            if(a.getDay()!= aula.getDay()) continue;
+            if(a.getTipo()=="T" || aula.getTipo()=="T") continue;
+            if(a.getInicio()==aula.getInicio()) return false;
+            if((a.getInicio() < aula.getInicio() < a.getFim()) && (aula.getInicio() < a.getInicio() < aula.getFim())) return false;
+        }
+    }
+    return true;
 }

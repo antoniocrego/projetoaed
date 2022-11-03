@@ -3,7 +3,7 @@ project(AED_Project)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(AED_Project main.cpp Tests/firstdoc.cpp GestaoHorarios.cpp GestaoHorarios.h Estudante.cpp Estudante.h Aula.cpp Aula.h UCTurma.cpp UCTurma.h)
+add_executable(AED_Project main.cpp Tests/firstdoc.cpp GestaoHorarios.cpp GestaoHorarios.h Estudante.cpp Estudante.h Aula.cpp Aula.h UCTurma.cpp UCTurma.h Pedido.cpp Pedido.h)
 # Doxygen Build
 find_package(Doxygen)
 if(DOXYGEN_FOUND)

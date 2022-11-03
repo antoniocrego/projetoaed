@@ -15,6 +15,7 @@ public:
     string getDay() const;
     float getInicio() const;
     float getFim() const;
+    string getTipo() const;
     bool operator<(const Aula& aula2) const;
     void print();
 

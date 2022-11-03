@@ -15,6 +15,7 @@ public:
     UCTurma(string uccode , string classcode);
     string getUC() const;
     string getClassCode() const;
+    void setClassCode(string class_);
     void print() const;
     bool operator==(const UCTurma& turma);
     void adicionarAula( const Aula& aula);
