@@ -124,7 +124,7 @@ void GestaoHorarios::processarPedido() {
                 cout << "Opção inválida!" << endl;
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << endl << "Insira o nome do novo estudante: ";
+                cout << endl << "Insira o numero máximo de estudantes da turma: ";
             }
             for (const UCTurma& t : find(estudantes.begin(),estudantes.end(),current.getStudent())->getturmasEstudante()){
                 if (t.getUC()==current.getUC2() && t.getClassCode()=="N/A"){
@@ -158,6 +158,10 @@ void GestaoHorarios::processarPedido() {
                     if (doable) {
                         find(estudantes.begin(), estudantes.end(), current.getStudent())->removerUC(current.getUC());
                         find(estudantes.begin(), estudantes.end(), current.getStudent())->adicionarTurma(*turmaDestino);
+                        cout << " : O estudante " << current.getStudent()
+                             << " foi inserido na turma " << current.getClass2() << " da UC "
+                             << current.getUC2() << " com sucesso!" << endl;
+                        sucesso.push_back(current);
                     }
                     else {
                         current.print();
@@ -332,6 +336,11 @@ void GestaoHorarios::processarPedido() {
                 if (doable) {
                     find(estudantes.begin(), estudantes.end(), current.getStudent())->removerUC(current.getUC());
                     find(estudantes.begin(), estudantes.end(), current.getStudent())->adicionarTurma(*turmaDestino);
+                    current.print();
+                    cout << " : O estudante " << current.getStudent()
+                         << " foi inserido na turma " << current.getClass2() << " da UC "
+                         << current.getUC2() << " com sucesso!" << endl;
+                    sucesso.push_back(current);
                 } else {
                     current.print();
                     cout << " : O horário do estudante " << current.getStudent() << " é incompatível com o da turma "
@@ -374,9 +383,26 @@ void GestaoHorarios::output() const {
 
 void GestaoHorarios::outputFails() const{
     ofstream file;
-    file.open("../PedidoFails.csv",ofstream::out |ofstream::app);
+    file.open("../PedidoFails.csv",ofstream::out | ofstream::trunc);
     for (const Pedido& p: fail){
-        file << p.getStudent() << ',' << p.getUC() << ',' << p.getClass() << ',' << p.getUC2() << ',' << p.getClass2() << ',' << p.getType() << '\n';
+        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << ".";
+        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << ".";
+        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << ".";
+        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << ".";
+        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << ".";
+    }
+    file.close();
+}
+
+void GestaoHorarios::outputSucessos() const{
+    ofstream file;
+    file.open("../PedidoSucessos.csv",ofstream::out | ofstream::trunc);
+    for (const Pedido& p: sucesso){
+        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << ".";
+        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << ".";
+        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << ".";
+        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << ".";
+        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << ".";
     }
     file.close();
 }

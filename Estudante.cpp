@@ -43,12 +43,12 @@ vector<UCTurma> Estudante::getturmasEstudante() {
     return turmasEstudante;
 }
 
-void Estudante::removerTurma(const string& uc){
+void Estudante::removerTurma(string uc){
     removerUC(uc);
     turmasEstudante.emplace_back(UCTurma(uc,"N/A"));
 }
 
-void Estudante::removerUC(const string& uc) {
+void Estudante::removerUC(string uc) {
     auto itr = turmasEstudante.begin();
     for (UCTurma t : turmasEstudante){
         if (uc==t.getUC()) turmasEstudante.erase(itr);

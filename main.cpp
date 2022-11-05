@@ -99,6 +99,34 @@ void Option4(const GestaoHorarios& gestor, string ano){
     if (estudantes.empty()) cout << "Nenhum aluno está inscrito em cadeiras do " << ano << "º ano letivo.";
     else cout << "Estão inscritos " << estudantes.size() << " alunos em cadeiras do " << ano << "º ano letivo.";
 }
+void mini2(const GestaoHorarios& gestor, const string& turma, const string& code){
+    vector<Estudante> StudentsTurma;
+    for (Estudante a: gestor.getEstudantes()){
+        for (const UCTurma& turmas: a.getturmasEstudante()){
+            if (turmas.getUC()==code && turmas.getClassCode()==turma) StudentsTurma.push_back(a);
+        }
+    }
+    sort(StudentsTurma.begin(),StudentsTurma.end());
+    cout << " : " << StudentsTurma.size()  << " alunos" << endl;
+
+}
+void option8(const GestaoHorarios& gestor){
+    vector<string > ucsprocessadas;
+    for (const UCTurma& uc : gestor.getUCTurmas()){
+        if (find(ucsprocessadas.begin(),ucsprocessadas.end(),uc.getUC()) == ucsprocessadas.end()){
+            cout << uc.getUC() << endl;
+            ucsprocessadas.push_back(uc.getUC());
+        }
+        else continue;
+        for(const UCTurma& turma : gestor.getUCTurmas()){
+            if (turma.getUC()==uc.getUC()) {
+                cout << "*\t" << turma.getClassCode();
+                mini2(gestor,turma.getClassCode(),turma.getUC());
+            }
+        }
+
+    }
+}
 
 int main() {
     GestaoHorarios gestor = GestaoHorarios();
@@ -114,6 +142,7 @@ int main() {
         cout << "5 - Adicionar pedidos" << endl;
         cout << "6 - Ver fila de pedidos" << endl;
         cout << "7 - Processar pedidos em fila" << endl;
+        cout << "8 - Ver todas as turmas da L.EIC" << endl;
         cout << "---------------------------------------------------------" << endl;
         cout << "Selecione uma opção: ";
         int selection = 0;
@@ -415,6 +444,18 @@ int main() {
             while(!gestor.getPedidos().empty()) gestor.processarPedido();
             gestor.output();
             gestor.outputFails();
+            gestor.outputSucessos();
+            cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
+            while (!(cin >> quit) or (quit != 0 and quit != 1)) {
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
+            }
+            if (quit==0) break;
+        }
+        if (selection==8){
+            option8(gestor);
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;

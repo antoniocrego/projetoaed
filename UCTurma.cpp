@@ -35,6 +35,3 @@ vector<Aula> UCTurma::getHorarioUCTurma(){
     return horarioUCTurma;
 }
 
-void UCTurma::setClassCode(string class_){
-    classcode_ = class_;
-}
