@@ -385,11 +385,11 @@ void GestaoHorarios::outputFails() const{
     ofstream file;
     file.open("../PedidoFails.csv",ofstream::out | ofstream::trunc);
     for (const Pedido& p: fail){
-        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << ".";
-        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << ".";
-        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << ".";
-        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << ".";
-        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << ".";
+        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << "." << endl;
+        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << "." << endl;
+        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << "." << endl;
+        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << "." << endl;
+        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << "." << endl;
     }
     file.close();
 }
@@ -398,11 +398,11 @@ void GestaoHorarios::outputSucessos() const{
     ofstream file;
     file.open("../PedidoSucessos.csv",ofstream::out | ofstream::trunc);
     for (const Pedido& p: sucesso){
-        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << ".";
-        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << ".";
-        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << ".";
-        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << ".";
-        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << ".";
+        if (p.getType()=="addClass") file << "*\tAdicionar aluno " << p.getStudent() << " à turma " << p.getClass2() << " da cadeira " << p.getUC2() << "." << endl;
+        if (p.getType()=="removeClass") file << "*\tRemover aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << "." << endl;
+        if (p.getType()=="addUC") file << "*\tAdicionar aluno " << p.getStudent() << " à cadeira " << p.getUC2() << "." << endl;
+        if (p.getType()=="removeUC") file << "*\tRemover aluno " << p.getStudent() << " da cadeira " << p.getUC() << "." << endl;
+        if (p.getType()=="changeClass") file << "*\tTrocar aluno " << p.getStudent() << " da sua turma da cadeira " << p.getUC() << " para a turma " << p.getClass2() << "." << endl;
     }
     file.close();
 }
