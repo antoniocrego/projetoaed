@@ -26,7 +26,7 @@ public:
      * @param tipo
      */
 
-    Aula(string uccode, string classcode, string dia, float inicio, float duracao, string tipo);
+    Aula(const string& uccode, const string& classcode, const string& dia, float inicio, float duracao, const string& tipo);
 
     /**
      * @brief Obtêm o dia em que a aula tem lugar

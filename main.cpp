@@ -1,27 +1,38 @@
 #include "GestaoHorarios.h"
-
 using namespace std;
-void Option1(const GestaoHorarios& gestor, const string& code){
+
+bool codigoDescendente(const Estudante& a, const Estudante& b) {return a.getCode()>b.getCode();}
+bool codigoAscendente(const Estudante& a, const Estudante& b) {return a.getCode()<b.getCode();}
+bool nomeDescendente(const Estudante& a, const Estudante& b) {return a.getName()>b.getName();}
+bool nomeAscendente(const Estudante& a, const Estudante& b) {return a.getName()<b.getName();}
+
+void Option1(const GestaoHorarios& gestor, const string& code, int sort_){
     vector <Estudante> StudentsUC;
     for (Estudante a: gestor.getEstudantes()){
         for (const UCTurma& turma: a.getturmasEstudante()){
             if (turma.getUC()==code) StudentsUC.push_back(a);
         }
     }
-    sort(StudentsUC.begin(),StudentsUC.end());
+    if (sort_==1) sort(StudentsUC.begin(),StudentsUC.end(), codigoDescendente);
+    else if (sort_==2) sort(StudentsUC.begin(),StudentsUC.end(), codigoAscendente);
+    else if (sort_==3) sort(StudentsUC.begin(),StudentsUC.end(), nomeDescendente);
+    else if (sort_==4) sort(StudentsUC.begin(),StudentsUC.end(), nomeAscendente);
     for (const Estudante& a: StudentsUC){
         cout << a.getCode() << ',' << a.getName() << endl;
     }
-    cout << "Estão inscritos " << StudentsUC.size() << " alunos nesta disciplina";
+    cout << "Estão inscritos " << StudentsUC.size() << " alunos nesta disciplina.";
 }
-void Option2(const GestaoHorarios& gestor, const string& turma, const string& code){
+void Option2(const GestaoHorarios& gestor, const string& turma, const string& code, int sort_){
     vector<Estudante> StudentsTurma;
     for (Estudante a: gestor.getEstudantes()){
         for (const UCTurma& turmas: a.getturmasEstudante()){
             if (turmas.getUC()==code && turmas.getClassCode()==turma) StudentsTurma.push_back(a);
         }
     }
-    sort(StudentsTurma.begin(),StudentsTurma.end());
+    if (sort_==1) sort(StudentsTurma.begin(),StudentsTurma.end(), codigoDescendente);
+    else if (sort_==2) sort(StudentsTurma.begin(),StudentsTurma.end(), codigoAscendente);
+    else if (sort_==3) sort(StudentsTurma.begin(),StudentsTurma.end(), nomeDescendente);
+    else if (sort_==4) sort(StudentsTurma.begin(),StudentsTurma.end(), nomeAscendente);
     for (const Estudante& a: StudentsTurma){
         cout << a.getCode() << ',' << a.getName() << endl;
     }
@@ -60,7 +71,7 @@ void Option3(const GestaoHorarios& gestor, int code) {
         counter++;
     }
 }
-void Option4(const GestaoHorarios& gestor, string ano){
+void Option4(const GestaoHorarios& gestor, string ano, int sort_){
     vector<Estudante> estudantes;
     if (ano=="3"){
         for (Estudante a: gestor.getEstudantes()){
@@ -92,7 +103,10 @@ void Option4(const GestaoHorarios& gestor, string ano){
             }
         }
     }
-    sort(estudantes.begin(),estudantes.end());
+    if (sort_==1) sort(estudantes.begin(),estudantes.end(), codigoDescendente);
+    else if (sort_==2) sort(estudantes.begin(),estudantes.end(), codigoAscendente);
+    else if (sort_==3) sort(estudantes.begin(),estudantes.end(), nomeDescendente);
+    else if (sort_==4) sort(estudantes.begin(),estudantes.end(), nomeAscendente);
     for (const Estudante& e: estudantes){
         cout << e.getCode() << ", " << e.getName() << endl;
     }
@@ -100,15 +114,13 @@ void Option4(const GestaoHorarios& gestor, string ano){
     else cout << "Estão inscritos " << estudantes.size() << " alunos em cadeiras do " << ano << "º ano letivo.";
 }
 void mini2(const GestaoHorarios& gestor, const string& turma, const string& code){
-    vector<Estudante> StudentsTurma;
+    int size = 0;
     for (Estudante a: gestor.getEstudantes()){
         for (const UCTurma& turmas: a.getturmasEstudante()){
-            if (turmas.getUC()==code && turmas.getClassCode()==turma) StudentsTurma.push_back(a);
+            if (turmas.getUC()==code && turmas.getClassCode()==turma) size++;
         }
     }
-    sort(StudentsTurma.begin(),StudentsTurma.end());
-    cout << " : " << StudentsTurma.size()  << " alunos" << endl;
-
+    cout << " : " << size << " alunos" << endl;
 }
 void option8(const GestaoHorarios& gestor){
     vector<string > ucsprocessadas;
@@ -124,13 +136,13 @@ void option8(const GestaoHorarios& gestor){
                 mini2(gestor,turma.getClassCode(),turma.getUC());
             }
         }
-
     }
 }
 
 int main() {
     GestaoHorarios gestor = GestaoHorarios();
     int quit;
+    int sort;
     while(true) {
         cout << endl << "Gestor de Horários de Estudantes L.EIC" << endl;
         cout << "Digite 0 a qualquer momento para fechar o programa" << endl;
@@ -143,10 +155,11 @@ int main() {
         cout << "6 - Ver fila de pedidos" << endl;
         cout << "7 - Processar pedidos em fila" << endl;
         cout << "8 - Ver todas as turmas da L.EIC" << endl;
+        cout << "0 - Sair do programa" << endl;
         cout << "---------------------------------------------------------" << endl;
         cout << "Selecione uma opção: ";
         int selection = 0;
-        while (!(cin >> selection) or selection > 9 or selection < 0) {
+        while (!(cin >> selection) or selection > 8 or selection < 0) {
             cout << "Opção inválida!" << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -163,7 +176,21 @@ int main() {
                 cout << endl << "Insira o código da UC: ";
             }
             if (code=="0") break;
-            Option1(gestor, code);
+            cout << "---------------------------------------------------------" << endl;
+            cout << "1 - Ordenar por código de estudante descendente" << endl;
+            cout << "2 - Ordenar por código de estudante ascendente" << endl;
+            cout << "3 - Ordenar por nome de estudante descendente" << endl;
+            cout << "4 - Ordenar por nome de estudante ascendente" << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "Escolha uma opção de ordenação: ";
+            while (!(cin>>sort) or selection<0 or selection>4){
+                if (sort==0) break;
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cout << endl << "Escolha uma opção de ordenação: ";
+            }
+            if (sort==0) break;
+            Option1(gestor, code, sort);
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;
@@ -194,7 +221,21 @@ int main() {
                 cout << endl << "Insira a turma: ";
             }
             if (turma=="0") break;
-            Option2(gestor,turma,code);
+            cout << "---------------------------------------------------------" << endl;
+            cout << "1 - Ordenar por código de estudante descendente" << endl;
+            cout << "2 - Ordenar por código de estudante ascendente" << endl;
+            cout << "3 - Ordenar por nome de estudante descendente" << endl;
+            cout << "4 - Ordenar por nome de estudante ascendente" << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "Escolha uma opção de ordenação: ";
+            while (!(cin>>sort) or selection<0 or selection>4){
+                if (sort==0) break;
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cout << endl << "Escolha uma opção de ordenação: ";
+            }
+            if (sort==0) break;
+            Option2(gestor,turma,code,sort);
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;
@@ -237,7 +278,22 @@ int main() {
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << endl << "Insira o ano letivo: ";
             }
-            Option4(gestor, year);
+            if (year=="0") break;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "1 - Ordenar por código de estudante descendente" << endl;
+            cout << "2 - Ordenar por código de estudante ascendente" << endl;
+            cout << "3 - Ordenar por nome de estudante descendente" << endl;
+            cout << "4 - Ordenar por nome de estudante ascendente" << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "Escolha uma opção de ordenação: ";
+            while (!(cin>>sort) or selection<0 or selection>4){
+                if (sort==0) break;
+                cout << "Opção inválida!" << endl;
+                cin.clear();
+                cout << endl << "Escolha uma opção de ordenação: ";
+            }
+            if (sort==0) break;
+            Option4(gestor, year, sort);
             cout << endl << "Insira 0 para sair do programa ou 1 para voltar ao menu principal: ";
             while (!(cin >> quit) or (quit != 0 and quit != 1)) {
                 cout << "Opção inválida!" << endl;

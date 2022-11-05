@@ -3,9 +3,8 @@
 //
 
 #include "Estudante.h"
-#include <iostream>
 
-Estudante::Estudante(int studentcode, string name) {
+Estudante::Estudante(int studentcode, const string& name) {
     studentcode_=studentcode;
     name_=name;
 }
@@ -20,7 +19,7 @@ string Estudante::getName() const {
 
 void Estudante::print() const {
     cout << studentcode_ << ',' << name_ << endl;
-    for (UCTurma turma : turmasEstudante) turma.print();
+    for (const UCTurma& turma : turmasEstudante) turma.print();
 }
 
 bool Estudante::operator==(const Estudante &aluno) const{
@@ -43,14 +42,14 @@ vector<UCTurma> Estudante::getturmasEstudante() {
     return turmasEstudante;
 }
 
-void Estudante::removerTurma(string uc){
+void Estudante::removerTurma(const string& uc){
     removerUC(uc);
     turmasEstudante.emplace_back(UCTurma(uc,"N/A"));
 }
 
-void Estudante::removerUC(string uc) {
+void Estudante::removerUC(const string& uc) {
     auto itr = turmasEstudante.begin();
-    for (UCTurma t : turmasEstudante){
+    for (const UCTurma& t : turmasEstudante){
         if (uc==t.getUC()) turmasEstudante.erase(itr);
         itr++;
     }

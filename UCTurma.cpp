@@ -8,7 +8,7 @@
 #include "Aula.h"
 #include <iostream>
 
-UCTurma::UCTurma(string uccode, string classcode) {
+UCTurma::UCTurma(const string& uccode, const string& classcode) {
     uccode_ = uccode;
     classcode_ = classcode;
 }

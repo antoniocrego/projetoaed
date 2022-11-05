@@ -301,7 +301,7 @@ void GestaoHorarios::processarPedido() {
                 cout << "Opção inválida!" << endl;
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << endl << "Insira o nome do novo estudante: ";
+                cout << endl << "Insira o numero máximo de estudantes da turma: ";
             }
             auto turmaDestino = find(horario.begin(),horario.end(),UCTurma(current.getUC2(),current.getClass2()));
             int current_students = 0;

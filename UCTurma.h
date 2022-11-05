@@ -19,7 +19,7 @@ public:
      * @param uccode
      * @param classcode
      */
-    UCTurma(string uccode , string classcode);
+    UCTurma(const string& uccode, const string& classcode);
     /**
      * @brief Obtêm o código da cadeira da UCTurma
      * @return uccode

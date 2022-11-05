@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include "UCTurma.h"
 
 class Estudante {
@@ -16,7 +17,7 @@ public:
     *@param studentcode
     *@param name
     */
-    Estudante(int studentcode, string name);//! Complexidade O(1)
+    Estudante(int studentcode, const string& name);//! Complexidade O(1)
     /**
      * @brief obtẽm o código do estudante
      * @return studentcode
@@ -60,12 +61,12 @@ public:
      * @param uc
      *
      */
-    void removerTurma(string uc);//! Complexidade O(n)
+    void removerTurma(const string& uc);//! Complexidade O(n)
     /**
      * @brief recebe um código de uma disciplina e remova o estudante da disiciplina correspondente ao código recebido
      * @param uc
      */
-    void removerUC(string uc);//! Complexidade O(n)
+    void removerUC(const string& uc);//! Complexidade O(n)
     /**
      * @brief adiciona um aluno a uma turma , e à sua disciplina correspondente.
      * @param turma

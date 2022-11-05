@@ -7,13 +7,13 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "Estudante.h"
-#include "Aula.h"
 #include <vector>
 #include <set>
 #include <queue>
 #include <algorithm>
 #include <limits>
+#include "Estudante.h"
+#include "Aula.h"
 #include "Pedido.h"
 #ifndef AED_PROJECT_GESTAOHORARIOS_H
 #define AED_PROJECT_GESTAOHORARIOS_H

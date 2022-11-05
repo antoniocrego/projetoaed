@@ -3,7 +3,7 @@
 //
 
 #include "Pedido.h"
-Pedido::Pedido(int studentcode, string uccode, string classcode, string uccode2, string classcode2, string type){
+Pedido::Pedido(int studentcode, const string& uccode, const string& classcode, const string& uccode2, const string& classcode2, const string& type){
     studentcode_=studentcode;
     uccode_=uccode;
     classcode_=classcode;

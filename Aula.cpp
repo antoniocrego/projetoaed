@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 
-Aula::Aula(string uccode, string classcode, string dia, float inicio, float duracao, string tipo) {
+Aula::Aula(const string& uccode, const string& classcode, const string& dia, float inicio, float duracao, const string& tipo){
     uccode_ = uccode;
     classcode_ = classcode;
     dia_=dia;

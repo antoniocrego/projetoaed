@@ -23,7 +23,7 @@ public:
      * @param classcode2
      * @param type
      */
-    Pedido(int studentcode, string uccode, string classcode, string uccode2, string classcode2, string type); //! Complexidade - O(1)
+    Pedido(int studentcode, const string& uccode, const string& classcode, const string& uccode2, const string& classcode2, const string& type); //! Complexidade - O(1)
     /**
      * @brief Devolve o codigo do estudante que faz o pedido
      * @return Codigo do estudante
