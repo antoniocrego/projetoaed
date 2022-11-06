@@ -23,8 +23,9 @@ class GestaoHorarios {
 public:
     /**
      * @brief Um construtor default que invoca todos os métodos do tipo Read quando chamado
+     * Complexidade-O (6n²)
      */
-    GestaoHorarios();//! Complexidade-O (6n²)
+    GestaoHorarios();
     /**
      * @brief A partir de um ficheiro escolhido( Classes.csv), armazena todas as aulas possíveis no curso de L.EIC, bem como organiza as suas caractísticas
      */
@@ -35,13 +36,16 @@ public:
     */
     void readEstudantes();//! Complexidade-O (2n²)
     /**
+     * Complexidade- O(n²)
     * @brief A partir de um ficheiro escolhido( students_classes.csv), armazena todas os códigos de todas as cadeiras existentes no curso de L.EIC
     */
-    void readCodes(); //! Complexidade- O(n²)
+    void readCodes();
     /**
+     *  Complexidade- O(n²)
     * @brief A partir de um ficheiro escolhido( students_classes.csv), armazena todas os códigos de todas as turmas existentes no curso de L.EIC
     */
-    void readTurmas();//! Complexidade- O(n²)
+    void readTurmas();
+
     /**
     * @brief Adiciona um pedido x feito por um estudante
     * @param x
@@ -51,7 +55,8 @@ public:
     * @brief Processa sucessivamente todos os pedidos feitos até esta chamada, separando em vetores os pedidos que tiveram sucesso, e os que falharam
     * @param x
     */
-    void processarPedido();//! Complexidade- O(
+    //! Complexidade- O(n²)
+    void processarPedido();
     /**
      * @brief Replica uma listagem de todos os estudantes, com todas as suas turmas correspondentes
      */
@@ -74,7 +79,7 @@ public:
      * @brief Obtêm a lista dos códigos de todas as cadeiras do curso
      * @return codes
      */
-    vector<string> getCodes() const;//! Complexidade - O(1) /
+    vector<string> getCodes() const;//! Complexidade - O(1)
     /**
     * @brief Obtêm a lista de todas as turmas existentes do curso de L.EIC
     * @return turmas

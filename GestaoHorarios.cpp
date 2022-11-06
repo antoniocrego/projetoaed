@@ -223,6 +223,7 @@ void GestaoHorarios::processarPedido() {
                 while (!(cin >> nome)) {
                     cout << "Opção inválida!" << endl;
                     cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     cout << endl << "Insira o nome do novo estudante: ";
                 }
                 estudantes.emplace_back(Estudante(current.getStudent(), nome));
